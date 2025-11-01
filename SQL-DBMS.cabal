@@ -65,6 +65,7 @@ executable SQL-DBMS
     other-modules:
         AST,
         Algebra,
+        Folder,
         Parser,
         Lexer,
         IO,

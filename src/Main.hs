@@ -1,9 +1,9 @@
 module Main where
 
 import Parser
+import Terminal
 
 main :: IO ()
 main = do
-    let x = testFunc
-    print x
-    putStrLn "Hello, Haskell!"
+    terminalEntrance
+    putStrLn "Quitting Program"
