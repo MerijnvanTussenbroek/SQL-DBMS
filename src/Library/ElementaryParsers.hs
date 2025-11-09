@@ -21,9 +21,8 @@ symbol x = satisfy (== x)
 
 token :: Eq s => [s] -> Parser s [s]
 token t = Parser $ \input -> case input of
-                                    alg@(_:xs)  | (take l alg) == t -> [(t,xs)]
+                                    alg  | (take l alg) == t -> [(t,drop l alg)]
                                                 | otherwise -> []
-                                    [] -> []
     where
         l = length t
 
@@ -35,6 +34,8 @@ eof = Parser $ \input -> if null input then [( (), input)] else []
 
 greedy :: Parser s a -> Parser s [a]
 greedy p = (:) <$> p <*> greedy p <<|> succeed []
+
+
 
 greedy1 :: Parser s a -> Parser s [a]
 greedy1 p = (:) <$> p <*> greedy p

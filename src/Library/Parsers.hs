@@ -38,6 +38,14 @@ parseDouble = (\a b _ d -> if a == '-' then -(f b d) else f b d )
 choice :: [Parser s a] -> Parser s a
 choice = foldr (<|>) failp
 
+parseIdentifier :: Parser Char String
+parseIdentifier =   (:)
+                    <$> parseFirstLetter
+                    <*> greedy parseSymbol
+
+option :: a -> Parser s a -> Parser s a
+option r p = p <|> succeed r
+
 chainr :: Parser s a -> Parser s (a -> a -> a) -> Parser s a
 chainr p q = output <$> many (middleparser <$> p <*> q) <*> p
   where
@@ -53,4 +61,10 @@ chainl p q = output <$> p <*> many (middleparser <$> q <*> p)
         output= foldl (flip ($))
         middleparser :: (a -> a -> a) -> a -> (a -> a)
         middleparser op x = (`op` x)
+
+listOf :: Parser s a -> Parser s b -> Parser s [a]
+listOf p q = (:) <$> p <*> greedy (q *> p)
+
+greedyChoice :: [Parser s a] -> Parser s a
+greedyChoice = foldr (<<|>) failp
 

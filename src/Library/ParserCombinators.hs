@@ -19,7 +19,7 @@ instance Applicative (Parser s) where
 
 instance Alternative (Parser s) where
     empty :: Parser s a
-    empty = Parser $ \input -> []
+    empty = Parser $ \_ -> []
     (<|>) :: Parser s a -> Parser s a -> Parser s a
     (Parser p) <|> (Parser q) = Parser $ \input -> p input ++ q input
 
@@ -27,7 +27,7 @@ instance Monad (Parser s) where
     return :: a -> Parser s a
     return = pure
     (>>=) :: Parser s a -> (a -> Parser s b) -> Parser s b
-    (Parser p) >>= f = Parser $ \input -> [ (y,ys) | (x,xs) <- p input, (y,ys) <- let (Parser q) = f x in q xs]
+    p >>= f = Parser $ \input -> [ (y,ys) | (x,xs) <- parse p input, (y,ys) <- parse (f x) xs]
 
 instance MonadPlus (Parser s) where
     mzero :: Parser s a
@@ -37,4 +37,4 @@ instance MonadPlus (Parser s) where
 
 infixr 3 <<|>
 (<<|>) :: Parser s a -> Parser s a -> Parser s a
-(Parser p) <<|> (Parser q) = Parser $ \input -> let r = p input in if null r then q input else r
+p <<|> q = Parser $ \input -> let r = parse p input in if null r then parse q input else r
