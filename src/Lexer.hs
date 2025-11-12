@@ -20,6 +20,9 @@ lexKeywords =   CREATE <$ token "CREATE"
                 <|> INTO <$ token "INTO"
                 <|> DELETE <$ token "DELETE"
                 <|> SELECT <$ token "SELECT"
+                <|> VALUES <$ token "VALUES"
+                <|> FROM <$ token "FROM"
+                <|> WHERE <$ token "WHERE"
 
 lexVarTypes :: Parser Char Token
 lexVarTypes =   TokenINT <$ token "INT"
@@ -38,8 +41,7 @@ lexValues :: Parser Char Token
 lexValues =     (BooleanToken True <$ token "TRUE"
                 <|> BooleanToken False <$ token "FALSE"
                 <|> IntToken <$> parseInteger)
-                <<|> (((\_ s _ -> CharToken s) <$> symbol '\'' <*> (satisfy (/= '\'')) <*> symbol '\'')
-                <<|> ((\_ s _ -> StringToken s) <$> symbol '\"' <*> greedy (satisfy (/= '\"')) <*> symbol '\"')
+                <<|> (((\_ s _ -> StringToken s) <$> symbol '\'' <*> greedy (satisfy (/= '\'')) <*> symbol '\'')
                 <<|> NameToken <$> parseIdentifier )
                 
 

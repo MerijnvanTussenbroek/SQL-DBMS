@@ -15,6 +15,9 @@ data Token =    EmptyToken
                 | INTO
                 | DELETE
                 | SELECT
+                | VALUES
+                | FROM
+                | WHERE
 
                 | TokenINT
                 | TokenTEXT
@@ -111,8 +114,8 @@ data ColumnConstraint = ColConstraint (Maybe Name) Bool (Maybe Expression) (Mayb
 --                  INTO table_name [ '(' column_name ( ',' column_name ) * ')' ] 
 --                  ( VALUES '(' expr ( ',' expr ) * ')'  
 
-data TableInsertion = InsertInto Name [Name] [Values]
-
+data TableInsertion = InsertInto Name [Name] [Expression]
+    deriving Show
 
 
 
@@ -122,6 +125,7 @@ data TableInsertion = InsertInto Name [Name] [Values]
 
 
 data TableDeletion = Delete Name [Expression]
+    deriving Show
 
 
 

@@ -8,6 +8,12 @@ import Control.Applicative
 
 import AST
 
+
+
+
+
+
+
 parseCreateStatement :: Parser Token TableCreation
 parseCreateStatement = do
                     symbol CREATE
@@ -19,6 +25,8 @@ parseCreateStatement = do
                     symbol ClosingRoundBracket
                     symbol Semicolon
                     return (Create name vars tableCons)
+
+
 
 parseColumnDef :: Parser Token ColumnDef
 parseColumnDef = ColDef <$> parseName <*> parseVarType <*> succeed Nothing
@@ -52,6 +60,47 @@ parseForeignKey1 = (\_ a _ b c -> ForeignKeyClause1 a b c)<$> symbol FOREIGNKEY 
 
 parseForeignKey2 :: Parser Token ForeignKeyClause2
 parseForeignKey2 = undefined
+
+
+
+
+
+
+
+parseTableInsert :: Parser Token TableInsertion
+parseTableInsert =  do
+                    symbol INSERT
+                    symbol INTO
+                    tableName <- parseName
+                    vars <- parseBrackets (option [] (listOf parseName(symbol Comma)))
+                    symbol VALUES
+                    expressions <- parseBrackets (option [] (listOf parseExpression (symbol Comma)))
+                    return (InsertInto tableName vars expressions)
+                    
+
+
+
+
+
+parseTableDelete :: Parser Token TableDeletion
+parseTableDelete =  do
+                    symbol DELETE
+                    symbol FROM
+                    name <- parseName
+                    symbol WHERE
+                    expressions <- parseBrackets (option [] (listOf parseExpression (symbol Comma)))
+                    return (Delete name expressions)
+
+
+
+parseTableSelection :: Parser Token TableSelection
+parseTableSelection =   do
+                        symbol SELECT
+                        allDisorNo <- undefined
+                        names <- listOf parseName (symbol Comma)
+
+                        return (Select allDisorNo names [] (Literal (Integer 0)))
+
 
 
 
