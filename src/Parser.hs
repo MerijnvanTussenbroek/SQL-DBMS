@@ -75,6 +75,7 @@ parseTableInsert =  do
                     vars <- parseBrackets (option [] (listOf parseName(symbol Comma)))
                     symbol VALUES
                     expressions <- parseBrackets (option [] (listOf parseExpression (symbol Comma)))
+                    symbol Semicolon
                     return (InsertInto tableName vars expressions)
                     
 
@@ -89,6 +90,7 @@ parseTableDelete =  do
                     name <- parseName
                     symbol WHERE
                     expressions <- parseBrackets (option [] (listOf parseExpression (symbol Comma)))
+                    symbol Semicolon
                     return (Delete name expressions)
 
 
@@ -96,10 +98,20 @@ parseTableDelete =  do
 parseTableSelection :: Parser Token TableSelection
 parseTableSelection =   do
                         symbol SELECT
-                        allDisorNo <- undefined
+                        allDisorNo <- option Nothing (Just <$> (anySymbol >>= f))
                         names <- listOf parseName (symbol Comma)
+                        symbol FROM
+                        tables <- option [] (listOf parseName (symbol Comma))
+                        symbol WHERE
+                        expression <- parseExpression
+                        symbol Semicolon
+                        return (Select allDisorNo names tables expression)
+                        where
+                f input = case input of
+                            DISTINCT -> return True
+                            ALL -> return False
+                            _ -> failp
 
-                        return (Select allDisorNo names [] (Literal (Integer 0)))
 
 
 

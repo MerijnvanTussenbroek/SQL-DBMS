@@ -23,6 +23,8 @@ lexKeywords =   CREATE <$ token "CREATE"
                 <|> VALUES <$ token "VALUES"
                 <|> FROM <$ token "FROM"
                 <|> WHERE <$ token "WHERE"
+                <|> DISTINCT <$ token "DISTINCT"
+                <|> ALL <$ token "ALL"
 
 lexVarTypes :: Parser Char Token
 lexVarTypes =   TokenINT <$ token "INT"

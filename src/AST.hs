@@ -18,6 +18,8 @@ data Token =    EmptyToken
                 | VALUES
                 | FROM
                 | WHERE
+                | DISTINCT
+                | ALL
 
                 | TokenINT
                 | TokenTEXT
@@ -133,9 +135,13 @@ data TableDeletion = Delete Name [Expression]
 --                  [ FROM ( table_or_subquery ( ',' table_or_subquery ) * | join_clause ) ]
 --                  [ WHERE expr ]
 
-data TableSelection = Select (Maybe Bool) [Name] [JoinExpression] Expression
+data TableSelection = Select (Maybe Bool) [Name] [Name] Expression
+    deriving Show
 
-data JoinExpression = Join Name JoinOperator Name (Maybe Expression)
+data JoinExpression =   Join Name JoinOperator Name (Maybe Expression)
+                        | End Name
+
+
 
 data JoinOperator = NATURAL | LEFT | INNER | CROSS
 
