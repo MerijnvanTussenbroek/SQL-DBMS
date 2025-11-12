@@ -1,0 +1,21 @@
+
+
+
+
+select_stmt ::= ( SELECT [ DISTINCT | ALL ] result_column ( ',' result_column ) *
+                [ FROM ( table_or_subquery ( ',' table_or_subquery ) * | join_clause ) ]
+                [ WHERE expr ]
+
+
+
+result_column ::= table_name
+
+table_or_subquery ::=   (  table_name
+                        | '(' ( table_or_subquery ( ',' table_or_subquery ) * | join_clause ) ')'
+
+join_clause ::= table_or_subquery [ join_operator table_or_subquery join_constraint ]
+
+join_operator ::= ( ','
+                  | [ NATURAL ] [ LEFT [ OUTER ] | INNER | CROSS ] JOIN )
+
+join_constraint ::= ON expr

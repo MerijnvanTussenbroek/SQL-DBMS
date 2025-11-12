@@ -12,9 +12,9 @@ main = do
     input <- readFile filepath
     putStrLn "Begin lexing"
     let x = parse lexer input
-    print x
-    --let (a, b) = head x
-    --print a
-    --let y = parse parseCreateStatement a
-    --print y
+    --print x
+    let (a, b) = head x
+    print a
+    let y = parse parseCreateStatement a
+    print y
     putStrLn "Quitting Program"

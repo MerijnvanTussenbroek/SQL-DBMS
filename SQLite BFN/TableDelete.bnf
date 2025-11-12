@@ -1,0 +1,26 @@
+delete_stmt ::= [ with_clause ] DELETE FROM qualified_table_name
+
+
+delete_stmt_limited ::= [ with_clause ]
+                        DELETE FROM qualified_table_name
+                        [ WHERE expr ]
+                        [
+                            [ ORDER BY ordering_term ( ',' ordering_term ) * ]
+                            LIMIT expr [ ( OFFSET | ',' ) expr ]
+                        ]
+
+
+
+with_clause ::= WITH
+                [ RECURSIVE ]
+                cte_table_name
+                AS
+                '(' select_stmt ')'
+                (
+                    ',' cte_table_name
+                    AS '(' select_stmt ')'
+                ) *
+
+
+
+cte_table_name ::= table_name [ '(' column_name ( ',' column_name ) * ')' ]

@@ -1,0 +1,19 @@
+expr ::= ( literal_value
+         | bind_parameter
+         | [ table_name '.' ] column_name
+         | unary_operator expr
+         | expr binary_operator expr
+         | '(' expr ')'
+         | CAST '(' expr AS type_name ')'
+         | expr [ NOT ] ( LIKE | REGEXP | MATCH ) expr
+         | expr ( ISNULL | NOTNULL | NOT NULL )
+         | expr IS [ NOT ] expr
+         | expr [ NOT ] BETWEEN expr AND expr
+literal_value ::= ( numeric_literal
+                  | string_literal
+                  | blob_literal
+                  | NULL
+                  | CURRENT_TIME
+                  | CURRENT_DATE
+                  | CURRENT_TIMESTAMP )
+numeric_literal ::= ( digit [ decimal_point ( digit ) * ] | decimal_point digit ) [ E [ '+' | '-' ] digit ]

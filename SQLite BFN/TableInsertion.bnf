@@ -1,0 +1,7 @@
+insert_stmt ::= [ with_clause ]
+                ( INSERT | REPLACE | INSERT OR REPLACE | INSERT OR ROLLBACK | INSERT OR ABORT | INSERT OR FAIL | INSERT OR IGNORE )
+                INTO [ database_name '.' ] table_name [ '(' column_name ( ',' column_name ) * ')' ]
+                ( VALUES '(' expr ( ',' expr ) * ')' ( ',' '(' expr ( ',' expr ) * ')' ) * | select_stmt | DEFAULT VALUES )
+
+
+

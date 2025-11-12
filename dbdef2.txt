@@ -1,0 +1,13 @@
+CREATE TABLE city (
+    test INT,
+    test2 TEXT,
+    test3 BOOL,
+    test4 VARCHAR(1),
+    test5 CHAR(1),
+
+
+    CONSTRAINT postcodecheck  CHECK (postcode < 999),
+
+    CONSTRAINT districtpk PRIMARY KEY (districtID),
+    CONSTRAINT districtfk FOREIGN KEY (cityID) REFERENCES city(cityID)
+);

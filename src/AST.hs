@@ -87,25 +87,24 @@ data ColumnDef = ColDef Name VarType (Maybe ColumnConstraint)
 
 data TableConstraint =  TabPrimKey (Maybe Name) Name
                         | TabCheck (Maybe Name) Expression
-                        | TabForeKey (Maybe Name) [Name] ForeignKeyClause
+                        | TabForeKey (Maybe Name) ForeignKeyClause1 
     deriving Show
 -- foreign_key_clause ::=   REFERENCES foreign_table
 --                          [ '(' column_name ( ',' column_name ) * ')' ]
 
-data ForeignKeyClause = ForeignKeyClause Name [Name]
+data ForeignKeyClause1 = ForeignKeyClause1 Name Name Name
     deriving Show
+
+data ForeignKeyClause2 = ForeignKeyClause2 Name [Name]
+    deriving Show
+
 -- column_constraint ::= [ CONSTRAINT name ]
 --                        ( PRIMARY KEY |
 --                        CHECK '(' expr ')' |
 --                        foreign_key_clause )
 
-data ColumnConstraint = ColConstraint (Maybe Name) Bool (Maybe Expression) (Maybe ForeignKeyClause)
+data ColumnConstraint = ColConstraint (Maybe Name) Bool (Maybe Expression) (Maybe ForeignKeyClause2)
     deriving Show
-
-
-
-
-
 
 -- insert_stmt ::=  [ with_clause ] 
 --                  ( INSERT) 
@@ -138,7 +137,7 @@ data JoinOperator = NATURAL | LEFT | INNER | CROSS
 
 
 
-data Expression =   BinaryExpression Expression Operator Expression
+data Expression =   BinaryExpression Operator Expression Expression
                     | UnaryExpression Expression Operator
                     | TableRowSelection (Maybe Name) Name
                     | Literal Values
@@ -178,6 +177,7 @@ data Values =   Integer Int
                 | Boolean Bool
                 | VarChar String
                 | Character Char
+                | Variable String
                 
     deriving Show
 
