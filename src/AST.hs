@@ -62,8 +62,13 @@ data Token =    EmptyToken
 
 -------------- Abstract Syntax Tree --------------
 
-data Statement = TableCreation | TableInsertion | TableDeletion | TableSelection
+newtype Program = Program [Statements]
 
+data Statements =    TableCreation TableCreation 
+                    | TableInsertion TableInsertion 
+                    | TableDeletion TableDeletion 
+                    | TableSelection TableSelection
+            deriving Show
 
 
 
@@ -149,7 +154,7 @@ data JoinOperator = NATURAL | LEFT | INNER | CROSS
 
 data Expression =   BinaryExpression Operator Expression Expression
                     | UnaryExpression Expression Operator
-                    | TableRowSelection (Maybe Name) Name
+                    
                     | Literal Values
                     | CASTAS Expression VarType
     deriving Show

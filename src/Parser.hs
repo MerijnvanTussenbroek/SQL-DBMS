@@ -8,8 +8,16 @@ import Control.Applicative
 
 import AST
 
+parser :: Parser Token [Statements]
+parser = greedy parseSQL
 
 
+parseSQL :: Parser Token Statements
+parseSQL =  (TableCreation <$> parseCreateStatement)
+            <|> (TableDeletion <$> parseTableDelete)
+            <|> (TableInsertion <$> parseTableInsert)
+            <|> (TableSelection <$> parseTableSelection)
+            
 
 
 
