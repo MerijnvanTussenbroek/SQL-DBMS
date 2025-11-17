@@ -35,8 +35,9 @@ eof = Parser $ \input -> if null input then [( (), input)] else []
 greedy :: Parser s a -> Parser s [a]
 greedy p = (:) <$> p <*> greedy p <<|> succeed []
 
-
-
 greedy1 :: Parser s a -> Parser s [a]
 greedy1 p = (:) <$> p <*> greedy p
+
+look :: Parser s [s]
+look = Parser $ \input -> [(input, input)]
 

@@ -43,23 +43,6 @@ data Token =    EmptyToken
 
 
 
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
 -------------- Abstract Syntax Tree --------------
 
 newtype Program = Program [Statements]

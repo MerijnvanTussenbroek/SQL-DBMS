@@ -3,6 +3,7 @@ module Parser where
 import Library.Parsers
 import Library.ParserCombinators
 import Library.ElementaryParsers
+import Lexer
 
 import Control.Applicative 
 
@@ -10,6 +11,23 @@ import AST
 
 parser :: Parser Token [Statements]
 parser = greedy parseSQL
+
+parseInput :: String -> Maybe [Statements]
+parseInput = choiceParser parser
+
+choiceParser :: Parser Token s -> String -> Maybe s
+choiceParser p input = returnValue
+    where
+        x = parse lexer input
+        y = f x
+        (a,_) = head x
+        z = if y then parse p a else []
+        c = f z
+        (d,_) = head z
+        returnValue = if c then Just d else Nothing
+        f [] = False
+        f _ = True
+
 
 
 parseSQL :: Parser Token Statements
