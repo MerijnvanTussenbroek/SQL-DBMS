@@ -70,10 +70,12 @@ executable SQL-DBMS
         Lexer,
         IO,
         Terminal,
+        Evaluator,
         Library.ElementaryParsers,
         Library.ParserCombinators,
         Library.Parsers,
-        Library.Environment
+        Library.Environment,
+        Library.Database
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:

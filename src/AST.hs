@@ -136,10 +136,8 @@ data JoinOperator = NATURAL | LEFT | INNER | CROSS
 
 
 data Expression =   BinaryExpression Operator Expression Expression
-                    | UnaryExpression Expression Operator
-                    
                     | Literal Values
-                    | CASTAS Expression VarType
+                    
     deriving Show
 data Operator = Operator
                 | Mul
@@ -176,6 +174,7 @@ data Values =   Integer Int
                 | VarChar String
                 | Character Char
                 | Variable String
+                | NULL
                 
     deriving Show
 

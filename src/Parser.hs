@@ -3,6 +3,7 @@ module Parser where
 import Library.Parsers
 import Library.ParserCombinators
 import Library.ElementaryParsers
+import Library.Database
 import Lexer
 
 import Control.Applicative 
@@ -42,14 +43,14 @@ parseSQL =  (TableCreation <$> parseCreateStatement)
 
 parseCreateStatement :: Parser Token TableCreation
 parseCreateStatement = do
-                    symbol CREATE
-                    symbol TABLE
+                    _ <- symbol CREATE
+                    _ <- symbol TABLE
                     name <- parseName 
-                    symbol OpeningRoundBracket
+                    _ <- symbol OpeningRoundBracket
                     vars <- option [] (listOf parseColumnDef (symbol Comma))
                     tableCons <- option [] (greedy (symbol Comma *> parseTableConstraint)) 
-                    symbol ClosingRoundBracket
-                    symbol Semicolon
+                    _ <- symbol ClosingRoundBracket
+                    _ <- symbol Semicolon
                     return (Create name vars tableCons)
 
 
@@ -184,7 +185,21 @@ parseExpression :: Parser Token Expression
 parseExpression =   parseBinaryExpression
                     <|> pAfter
 
+-------------------------------------------------------------
 
+parseDB :: String -> Maybe Database
+parseDB = undefined
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------
 
 parseBrackets :: Parser Token a -> Parser Token a
 parseBrackets p = (\_ a _ -> a) <$> symbol OpeningRoundBracket <*> p <*> symbol ClosingRoundBracket

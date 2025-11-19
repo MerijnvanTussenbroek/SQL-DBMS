@@ -1,6 +1,6 @@
 module Main where
 
-import Library.Environment
+import Library.Database
 import Terminal (terminalEntrance)
 
 main :: IO ()

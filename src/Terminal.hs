@@ -2,7 +2,9 @@ module Terminal where
 
 import IO
 import Parser
-import Library.Environment
+import Library.Database
+
+import Data.Maybe
 
 terminalEntrance :: Database ->  IO ()
 terminalEntrance db = do
@@ -20,17 +22,32 @@ terminalTermination = putStrLn "Quitting Terminal"
 
 inputProcessing :: Database -> String -> IO Database
 inputProcessing db x    | compareWord "read " x = do  
-    readSQLFromFile (dropWord "read " x) >>= print
-    return db
+    parsed <- readSQLFromFile (dropWord "read " x)
+    if isNothing parsed 
+        then putStrLn "Couldn't parse file."
+        else putStrLn "Applying statements in the file"
+    return (if isNothing parsed 
+                then db 
+                else runStatements (fromJust parsed) db)
+
+
                         | compareWord "open " x = do
-    readDBFromFile (dropWord "open " x) >>= print
-    return db  
+    newDB <- readDBFromFile (dropWord "open " x)
+    if isNothing newDB 
+        then putStrLn "Couldn't parse file." 
+        else putStrLn "Opening new database" 
+    return (fromMaybe db newDB)
+
+
                         | compareWord "save " x = do
-    saveToFile (dropWord "save " x) >>= print
-    return db                    
+    saveToFile db (dropWord "save " x) >>= print
+    return db
+
+
                         | compareWord "SELECT" x = do
     print (choiceParser parseTableSelection x)
-    return db                    
+    return db 
+
                         | otherwise = do
     putStrLn x
     return db
