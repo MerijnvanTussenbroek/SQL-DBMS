@@ -1,0 +1,4 @@
+SELECT DISTINCT streetname 
+FROM city, company
+WHERE name == 'Amsterdam'
+;

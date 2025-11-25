@@ -26,7 +26,6 @@ data SQLAlgebra expr fkc1 cc cd tc tcr ti td ts st p env = SQLAlgebra {
     foreignKeyClause1 :: env -> Name -> Name -> Name -> (env, fkc1),
 
     binaryExpression :: env -> Operator -> expr -> expr -> (env, expr),
-    literalExpression :: env -> expr -> (env, expr),
     literal :: env -> Values -> (env, expr)
 
     }

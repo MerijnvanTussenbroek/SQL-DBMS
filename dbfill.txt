@@ -1,0 +1,4 @@
+INSERT INTO city (test, test2, test3, test4, test5)
+VALUES
+(5, 'text', TRUE, 'f', 'c')
+;

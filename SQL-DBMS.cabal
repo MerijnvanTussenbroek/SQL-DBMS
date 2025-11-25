@@ -71,11 +71,17 @@ executable SQL-DBMS
         IO,
         Terminal,
         Evaluator,
+
         Library.ElementaryParsers,
         Library.ParserCombinators,
         Library.Parsers,
         Library.Environment,
-        Library.Database
+        Library.Database,
+
+        Folders.TableCreationFolder,
+        Folders.TableDeletionFolder,
+        Folders.TableInsertionFolder,
+        Folders.TableSelectionFolder
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:

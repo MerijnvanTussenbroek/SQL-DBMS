@@ -126,13 +126,6 @@ data TableDeletion = Delete Name [Expression]
 data TableSelection = Select (Maybe Bool) [Name] [Name] Expression
     deriving Show
 
-data JoinExpression =   Join Name JoinOperator Name (Maybe Expression)
-                        | End Name
-
-
-
-data JoinOperator = NATURAL | LEFT | INNER | CROSS
-
 
 
 data Expression =   BinaryExpression Operator Expression Expression
@@ -166,7 +159,27 @@ data VarType =  INT
                 | VARCHAR Int
                 | BOOL
                 | CHAR Int
-    deriving Show
+                | Null
+    deriving(Show)
+
+instance Eq VarType where
+    
+    INT == INT = True
+    INT == _ = False
+    BOOL == BOOL = True
+    BOOL == _ = False
+    Null == Null = True
+    Null == _ = False
+    TEXT == TEXT = True
+    TEXT == VARCHAR _ = True
+    TEXT == CHAR _ = True
+    VARCHAR _ == VARCHAR _ = True
+    VARCHAR _ == TEXT = True
+    VARCHAR _ == CHAR _ = True
+    CHAR _ == CHAR _ = True
+    CHAR _ == VARCHAR _ = True
+    CHAR _ == TEXT = True
+    _ == _ = False
 
 data Values =   Integer Int
                 | Text String
@@ -174,8 +187,7 @@ data Values =   Integer Int
                 | VarChar String
                 | Character Char
                 | Variable String
-                | NULL
-                
-    deriving Show
+                | NULL 
+    deriving(Show, Eq)
 
 type Name = String

@@ -26,11 +26,7 @@ inputProcessing db x    | compareWord "read " x = do
     if isNothing parsed 
         then putStrLn "Couldn't parse file."
         else putStrLn "Applying statements in the file"
-    return (if isNothing parsed 
-                then db 
-                else runStatements (fromJust parsed) db)
-
-
+    return db -- needs to be changed
                         | compareWord "open " x = do
     newDB <- readDBFromFile (dropWord "open " x)
     if isNothing newDB 
