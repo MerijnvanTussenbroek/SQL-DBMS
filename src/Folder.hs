@@ -46,7 +46,7 @@ sqlFolder SQLAlgebra {..} = pfold
 
         dfold env (Delete name expr) = delete env2 name e
             where
-                (env2, e) = runOver env expr [] exprfold
+                (env2, e) = exprfold env expr
 
         sfold env (Select b names1 names2 expr) = select env2 b names1 names2 e
             where

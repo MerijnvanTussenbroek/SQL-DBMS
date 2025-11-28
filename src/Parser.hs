@@ -116,7 +116,7 @@ parseTableDelete =  do
                     symbol FROM
                     name <- parseName
                     symbol WHERE
-                    expressions <- parseBrackets (option [] (listOf parseExpression (symbol Comma)))
+                    expressions <- parseBrackets parseExpression
                     symbol Semicolon
                     return (Delete name expressions)
 

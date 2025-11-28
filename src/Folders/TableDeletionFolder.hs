@@ -4,53 +4,92 @@ import AST
 import Algebra
 import Folder
 import Library.Database
+import Evaluator
 
-creationFolder :: Database -> TableCreation -> Database
-creationFolder db creation = undefined
+deletionFolder :: Table -> TableDeletion -> (Table, String)
+deletionFolder db deletion = newTable
+    where
+        newTable = sqlFolder deletionAlgebra db (Program [TableDeletion deletion])
+        
 
-creationAlgebra :: SQLAlgebra expr fkc1 cc cd tc tcr ti td ts st p env
-creationAlgebra = SQLAlgebra
-    cprogram
+deletionAlgebra :: SQLAlgebra Expression fkc1 cc cd tc tcr ti String ts String String Table
+deletionAlgebra = SQLAlgebra
+    dprogram
 
-    ctableCreation
-    ctableInsertion
-    ctableDeletion
-    ctableSelection
+    dtableCreation
+    dtableInsertion
+    dtableDeletion
+    dtableSelection
 
-    ccreate
-    cinsertInto
-    cdelete
-    cselect
+    dcreate
+    dinsertInto
+    ddelete
+    dselect
 
-    ctabPrimKey
-    ctabCheck
-    ctabForeKey
+    dtabPrimKey
+    dtabCheck
+    dtabForeKey
 
-    ccolDef
-    cforeignKeyClause1
-    cbinaryExpression
-    cliteral
+    dcolDef
+    dforeignKeyClause1
+    dbinaryExpression
+    dliteral
 
 
-cprogram = undefined
+dprogram :: env -> [[s]] -> (env, [s])
+dprogram env strings = (env, concat strings)
 
-ctableCreation = undefined
-ctableInsertion = undefined
-ctableDeletion = undefined
-ctableSelection = undefined
+dtableCreation = undefined
+dtableInsertion = undefined
+dtableDeletion :: env -> [s] -> (env, [s])
+dtableDeletion env ts = (env, ts)
+dtableSelection = undefined
 
-ccreate = undefined
-cinsertInto = undefined
-cdelete = undefined
-cselect = undefined
+dcreate = undefined
+dinsertInto = undefined
 
-ctabPrimKey = undefined
-ctabCheck = undefined
-ctabForeKey = undefined
+ddelete :: Table -> Name -> Expression -> (Table, String)
+ddelete (Table tname vals cons rows) name exps = (Table tname vals cons l2, "Deleted:" ++ show l1)
+    where
+        names = unZipa vals
+        zipped = map (myZipper names) rows
+        expressions = map (`constructExpression` exps) zipped
+        evaluated = map evaluate expressions
+        keepEmOrNot = zip evaluated rows
+        (l1,l2) = sortThem ([],[]) (retrieveVals keepEmOrNot)
+        
 
-ccolDef = undefined
-cforeignKeyClause1 = undefined
 
-cbinaryExpression = undefined
-cliteral = undefined
+ddelete EmptyTable _ _ = (EmptyTable, "Something went wrong. Tried deleting from an empty table")
+
+dselect = undefined
+
+dtabPrimKey = undefined
+dtabCheck = undefined
+dtabForeKey = undefined
+
+dcolDef = undefined
+dforeignKeyClause1 = undefined
+
+dbinaryExpression :: env -> Operator -> Expression -> Expression -> (env, Expression)
+dbinaryExpression env op e1 e2 = (env, BinaryExpression op e1 e2)
+dliteral :: env -> Values -> (env, Expression)
+dliteral env v = (env, Literal v)
+
+unZipa :: [(a,b)] -> [a]
+unZipa ((a,_):xs) = a : unZipa xs
+unZipa [] = []
+
+myZipper ::  [Name] -> Row -> [(Name, Values)]
+myZipper names (Row v) = zip names v
+
+sortThem :: ([a],[a]) -> [(Bool,a)] -> ([a],[a])
+sortThem (l1,l2) ((True, a):xs) = sortThem (a:l1,l2) xs
+sortThem (l1,l2) ((False, a):xs) = sortThem (l1,a:l2) xs
+sortThem list [] = list
+
+retrieveVals :: [(Values, a)] -> [(Bool, a)]
+retrieveVals ((Boolean b, a):xs) = (b,a) : retrieveVals xs
+retrieveVals ((_,a):xs) = (False, a) : retrieveVals xs
+retrieveVals [] = []
 

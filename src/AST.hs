@@ -114,7 +114,7 @@ data TableInsertion = InsertInto Name [Name] [Expression]
 --                          [ WHERE expr ]
 
 
-data TableDeletion = Delete Name [Expression]
+data TableDeletion = Delete Name Expression
     deriving Show
 
 

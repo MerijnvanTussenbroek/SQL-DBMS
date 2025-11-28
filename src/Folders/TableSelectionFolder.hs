@@ -5,52 +5,54 @@ import Algebra
 import Folder
 import Library.Database
 
-creationFolder :: Database -> TableCreation -> Database
-creationFolder db creation = undefined
+selectionFolder :: Table -> TableSelection -> (Table, String)
+selectionFolder db selection = newTable
+    where
+        newTable = sqlFolder selectionAlgebra db (Program [TableSelection selection])
 
-creationAlgebra :: SQLAlgebra expr fkc1 cc cd tc tcr ti td ts st p env
-creationAlgebra = SQLAlgebra
-    cprogram
+selectionAlgebra :: SQLAlgebra expr fkc1 cc cd tc tcr ti td ts st p env
+selectionAlgebra = SQLAlgebra
+    sprogram
 
-    ctableCreation
-    ctableInsertion
-    ctableDeletion
-    ctableSelection
+    stableCreation
+    stableInsertion
+    stableDeletion
+    stableSelection
 
-    ccreate
-    cinsertInto
-    cdelete
-    cselect
+    screate
+    sinsertInto
+    sdelete
+    sselect
 
-    ctabPrimKey
-    ctabCheck
-    ctabForeKey
+    stabPrimKey
+    stabCheck
+    stabForeKey
 
-    ccolDef
-    cforeignKeyClause1
-    cbinaryExpression
-    cliteral
+    scolDef
+    sforeignKeyClause1
+    sbinaryExpression
+    sliteral
 
 
-cprogram = undefined
+sprogram = undefined
 
-ctableCreation = undefined
-ctableInsertion = undefined
-ctableDeletion = undefined
-ctableSelection = undefined
+stableCreation = undefined
+stableInsertion = undefined
+stableDeletion = undefined
+stableSelection = undefined
 
-ccreate = undefined
-cinsertInto = undefined
-cdelete = undefined
-cselect = undefined
+screate = undefined
+sinsertInto = undefined
+sdelete = undefined
+sselect = undefined
 
-ctabPrimKey = undefined
-ctabCheck = undefined
-ctabForeKey = undefined
+stabPrimKey = undefined
+stabCheck = undefined
+stabForeKey = undefined
 
-ccolDef = undefined
-cforeignKeyClause1 = undefined
+scolDef = undefined
+sforeignKeyClause1 = undefined
 
-cbinaryExpression = undefined
-cliteral = undefined
+sbinaryExpression = undefined
+sliteral = undefined
 

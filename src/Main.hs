@@ -7,6 +7,8 @@ import Lexer
 import Parser
 import Folders.TableCreationFolder
 import Folders.TableInsertionFolder
+import Folders.TableDeletionFolder
+import AST 
 
 main :: IO ()
 main = do
@@ -28,5 +30,15 @@ main = do
     print x
     putStrLn "\n--------------------------------\n"
     print y
+    let z =     Delete "city" 
+                (BinaryExpression EqualComp 
+                (Literal (Variable "test")) 
+                (Literal (Integer 5)
+                ))
+    let (table, string) = deletionFolder x z
+    putStrLn "\n--------------------------------\n"
+    print table
+    putStrLn "\n--------------------------------\n"
+    putStrLn string
     putStrLn "Quitting Program"
 
