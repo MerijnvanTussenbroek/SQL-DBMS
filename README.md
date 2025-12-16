@@ -24,7 +24,8 @@ We will begin with implementing the following commands, before moving to the mor
 
     expressions
     table creation
-    constraints
     insertion into tables
     deletion from tables
     selection from tables
+
+I am not done with the project, but I am for now. I will return to it later.
