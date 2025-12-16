@@ -1,6 +1,7 @@
 module Evaluator where
 
 import AST
+import Library.Database
 
 
 
@@ -56,3 +57,21 @@ calculate NotEqualComp v1 v2 = Boolean (not b)
         (Boolean b) = calculate EqualComp v1 v2
 
 calculate _ _ _ = NULL
+
+
+myZipper :: [Name] -> Row -> [(Name, Values)]
+myZipper names (Row v) = zip names v
+
+unZipa :: [(a,b)] -> [a]
+unZipa ((a,_):xs) = a : unZipa xs
+unZipa [] = []
+
+retrieveVals :: [(Values, a)] -> [(Bool, a)]
+retrieveVals ((Boolean b, a):xs) = (b,a) : retrieveVals xs
+retrieveVals ((_,a):xs) = (False, a) : retrieveVals xs
+retrieveVals [] = []
+
+sortThem :: ([a],[a]) -> [(Bool, a)] -> ([a],[a])
+sortThem (l1,l2) ((True, a):xs) = sortThem (a:l1, l2) xs
+sortThem (l1,l2) ((False, a):xs) = sortThem (l1, a:l2) xs
+sortThem alg [] = alg

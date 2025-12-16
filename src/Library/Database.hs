@@ -4,10 +4,10 @@ import AST
 
 data Database = DB Name [Table]
                 | EmptyDB
-                | ReturnColumns [Row]
 
 data Table =    Table Name [(Name, VarType)] [TableConstraint] [Row]
                 | EmptyTable
+                | ReturnColumns [Row]
                 deriving Show
 
 data Row = Row [Values]

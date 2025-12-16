@@ -73,23 +73,8 @@ dforeignKeyClause1 = undefined
 
 dbinaryExpression :: env -> Operator -> Expression -> Expression -> (env, Expression)
 dbinaryExpression env op e1 e2 = (env, BinaryExpression op e1 e2)
+
 dliteral :: env -> Values -> (env, Expression)
 dliteral env v = (env, Literal v)
 
-unZipa :: [(a,b)] -> [a]
-unZipa ((a,_):xs) = a : unZipa xs
-unZipa [] = []
-
-myZipper ::  [Name] -> Row -> [(Name, Values)]
-myZipper names (Row v) = zip names v
-
-sortThem :: ([a],[a]) -> [(Bool,a)] -> ([a],[a])
-sortThem (l1,l2) ((True, a):xs) = sortThem (a:l1,l2) xs
-sortThem (l1,l2) ((False, a):xs) = sortThem (l1,a:l2) xs
-sortThem list [] = list
-
-retrieveVals :: [(Values, a)] -> [(Bool, a)]
-retrieveVals ((Boolean b, a):xs) = (b,a) : retrieveVals xs
-retrieveVals ((_,a):xs) = (False, a) : retrieveVals xs
-retrieveVals [] = []
 

@@ -51,7 +51,7 @@ lexWhiteSpace :: Parser Char Token
 lexWhiteSpace = EmptyToken <$ spaceParser
 
 operatorTokenList :: [(String, Operator)]
-operatorTokenList = [("*", Mul), ("/", Div), ("%",Mod),("+",Add),("-",Min),("<=",LessThanOrEqual),("<",LessThan),(">=",GreaterThanOrEqual),(">",GreaterThan),("==",EqualComp),("!=",NotEqualComp), ("!", LogicalNot),("&&",LogicalAnd),("||",LogicalOr)]
+operatorTokenList = [("*", Mul), ("/", Div), ("%",Mod),("+",Add),("-",Min),("<=",LessThanOrEqual),("<",LessThan),(">=",GreaterThanOrEqual),(">",GreaterThan),("=",EqualComp),("!=",NotEqualComp), ("!", LogicalNot),("&&",LogicalAnd),("||",LogicalOr)]
 
 lexOperators :: Parser Char Token
 lexOperators = foldr (\(s, t) p -> (OperatorToken t <$ token s)  <|> p) failp operatorTokenList 

@@ -128,7 +128,7 @@ parseTableSelection =   do
                         allDisorNo <- option Nothing (Just <$> (anySymbol >>= f))
                         names <- listOf parseName (symbol Comma)
                         symbol FROM
-                        tables <- option [] (listOf parseName (symbol Comma))
+                        tables <- parseName
                         symbol WHERE
                         expression <- parseExpression
                         symbol Semicolon

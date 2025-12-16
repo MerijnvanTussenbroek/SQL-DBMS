@@ -123,7 +123,7 @@ data TableDeletion = Delete Name Expression
 --                  [ FROM ( table_or_subquery ( ',' table_or_subquery ) * | join_clause ) ]
 --                  [ WHERE expr ]
 
-data TableSelection = Select (Maybe Bool) [Name] [Name] Expression
+data TableSelection = Select (Maybe Bool) [Name] Name Expression
     deriving Show
 
 

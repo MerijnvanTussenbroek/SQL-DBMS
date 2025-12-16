@@ -15,7 +15,7 @@ data SQLAlgebra expr fkc1 cc cd tc tcr ti td ts st p env = SQLAlgebra {
     create :: env -> Name -> [cd] -> [tc] -> (env, tcr),
     insertInto :: env -> Name -> [Name] -> [expr] -> (env, ti),
     delete :: env -> Name -> expr -> (env, td),
-    select :: env -> Maybe Bool -> [Name] -> [Name] -> expr -> (env,ts),
+    select :: env -> Maybe Bool -> [Name] -> Name -> expr -> (env,ts),
 
     tabPrimKey :: env -> Maybe Name -> Name -> (env, tc),
     tabCheck :: env -> Maybe Name -> expr -> (env, tc),

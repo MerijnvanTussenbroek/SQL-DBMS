@@ -4,13 +4,14 @@ import AST
 import Algebra
 import Folder
 import Library.Database
+import Evaluator
 
 selectionFolder :: Table -> TableSelection -> (Table, String)
 selectionFolder db selection = newTable
     where
         newTable = sqlFolder selectionAlgebra db (Program [TableSelection selection])
 
-selectionAlgebra :: SQLAlgebra expr fkc1 cc cd tc tcr ti td ts st p env
+selectionAlgebra :: SQLAlgebra Expression fkc1 cc cd tc tcr ti td String String String Table
 selectionAlgebra = SQLAlgebra
     sprogram
 
@@ -34,18 +35,33 @@ selectionAlgebra = SQLAlgebra
     sliteral
 
 
-sprogram = undefined
+sprogram :: a -> [String] -> (a, String)
+sprogram env st = (env, concat st)
 
 stableCreation = undefined
 stableInsertion = undefined
 stableDeletion = undefined
-stableSelection = undefined
+stableSelection :: env -> [s] -> (env, [s])
+stableSelection env ts = (env, ts)
 
 screate = undefined
 sinsertInto = undefined
 sdelete = undefined
-sselect = undefined
+-- TableSelection = Select (Maybe Bool) [Name] Name Expression
 
+sselect :: Table -> Maybe Bool -> [Name] -> Name -> Expression -> (Table, String)
+sselect (Table tableName vals cons rows) _ rowNames _ expr = (ReturnColumns l1, "Selected the following")
+    where
+        names = unZipa vals
+        zipped = map (myZipper names) rows
+        expressions = map (`constructExpression` expr) zipped
+        evaluated = map evaluate expressions
+        keepEmOrNot = zip evaluated rows
+        (l1,_) = sortThem ([],[]) (retrieveVals keepEmOrNot)
+
+
+
+sselect EmptyTable _ _ _ _ = (EmptyTable, "Tried selecting from an empty table. Error.")
 stabPrimKey = undefined
 stabCheck = undefined
 stabForeKey = undefined
@@ -53,6 +69,9 @@ stabForeKey = undefined
 scolDef = undefined
 sforeignKeyClause1 = undefined
 
-sbinaryExpression = undefined
-sliteral = undefined
+sbinaryExpression :: Table -> Operator -> Expression -> Expression -> (Table, Expression)
+sbinaryExpression t o e1 e2 = (t, BinaryExpression o e1 e2)
+
+sliteral :: Table -> Values -> (Table, Expression)
+sliteral t v = (t, Literal v)
 
