@@ -5,8 +5,10 @@ import Algebra
 import Folder
 import Library.Database
 
-create :: Database -> TableCreation -> Database
-create = undefined
+create :: Database -> TableCreation -> (Database,String)
+create db stat = (addTable db newTable, string)
+    where
+        (newTable, string) = creationFolder stat
 
 creationFolder :: TableCreation -> (Table, String)
 creationFolder creation = newTable

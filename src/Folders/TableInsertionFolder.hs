@@ -6,11 +6,15 @@ import Folder
 import Evaluator
 import Library.Database
 
-insertInto :: Database -> TableCreation -> Database
-insertInto = undefined
+insertInto :: Database -> TableInsertion -> (Database, String)
+insertInto db@(DB dbName tables) stat@(InsertInto name _ _) = (DB dbName (changeTable tables newTable), string)
+    where
+        (newTable, string) = maybe (EmptyTable, "Unable to insert into") (insertionFolder stat) (retrieveTable name db)
 
-insertionFolder :: Table -> TableInsertion -> (Table, String)
-insertionFolder db creation = newTable
+        
+
+insertionFolder :: TableInsertion -> Table -> (Table, String)
+insertionFolder creation db = newTable
     where
         newTable = sqlFolder insertionAlgebra db (Program [TableInsertion creation])
 

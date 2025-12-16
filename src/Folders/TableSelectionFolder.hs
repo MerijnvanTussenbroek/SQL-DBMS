@@ -6,10 +6,17 @@ import Folder
 import Library.Database
 import Evaluator
 
-selectionFolder :: Table -> TableSelection -> (Table, String)
-selectionFolder db selection = newTable
+
+select :: Database -> TableSelection -> (Table, String)
+select db selection@(Select _ _ name _) = maybe (EmptyTable, "Couldn't find the table within the database") (selectionFolder selection) tableName
     where
-        newTable = sqlFolder selectionAlgebra db (Program [TableSelection selection])
+        tableName = retrieveTable name db
+        
+
+selectionFolder :: TableSelection -> Table -> (Table, String)
+selectionFolder selection table = newTable
+    where
+        newTable = sqlFolder selectionAlgebra table (Program [TableSelection selection])
 
 selectionAlgebra :: SQLAlgebra Expression fkc1 cc cd tc tcr ti td String String String Table
 selectionAlgebra = SQLAlgebra
@@ -61,7 +68,7 @@ sselect (Table tableName vals cons rows) _ rowNames _ expr = (ReturnColumns l1, 
 
 
 
-sselect EmptyTable _ _ _ _ = (EmptyTable, "Tried selecting from an empty table. Error.")
+sselect EmptyTable _ _ _ _ = (EmptyTable, "Tried selecting from an empty table. Table possibly did not exist. Error.")
 stabPrimKey = undefined
 stabCheck = undefined
 stabForeKey = undefined

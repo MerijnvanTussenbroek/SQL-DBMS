@@ -6,8 +6,13 @@ import Folder
 import Library.Database
 import Evaluator
 
-deletionFolder :: Table -> TableDeletion -> (Table, String)
-deletionFolder db deletion = newTable
+delete :: Database -> TableDeletion -> (Database, String)
+delete db@(DB dbName tables) stat@(Delete name expr) = (DB dbName (changeTable tables newTable), string)
+    where
+        (newTable, string) = maybe (EmptyTable, "Unable to delete") (deletionFolder stat) (retrieveTable name db)
+
+deletionFolder :: TableDeletion -> Table -> (Table, String)
+deletionFolder deletion db = newTable
     where
         newTable = sqlFolder deletionAlgebra db (Program [TableDeletion deletion])
         
